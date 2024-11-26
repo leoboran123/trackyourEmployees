@@ -19,7 +19,7 @@ class staffTrack(models.Model):
 
 class staffVacation(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
-    vacationTime = models.IntegerField(default=15)
+    vacationTime = models.CharField(default="360:00:00", max_length=150)
     create_at = models.DateTimeField(auto_now_add=True)
     update_at = models.DateTimeField(auto_now=True)
 
@@ -27,7 +27,6 @@ class staffVacation(models.Model):
 def create_user_profile(sender, instance, created, **kwargs):
 
     if created:
-
         staffVacation.objects.create(user = instance)
 
 
@@ -36,5 +35,22 @@ class staffLate(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     todays_date = models.DateTimeField(blank=True)
     late_diff = models.CharField(max_length= 200, blank=True)
+    active = models.BooleanField(blank=True, default=True)
+
+
+class staffRequest(models.Model):
+    STATUS = (
+        ('Bekliyor', 'Bekliyor'),
+        ('Onaylandı', 'Onaylandı'),
+        ('Reddedildi', 'Reddedildi'),
+    )
+
+    id = models.AutoField(primary_key=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user_id")
+    staff = models.ForeignKey(User, on_delete=models.CASCADE, related_name="staff_id")
+    requestedVacationTime = models.IntegerField()
+    status = models.CharField(max_length=10, choices=STATUS, default='Bekliyor')
+    active = models.BooleanField(blank=True, default=True)
+    update_at = models.DateTimeField(auto_now=True)
 
 

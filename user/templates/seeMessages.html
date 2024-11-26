@@ -1,0 +1,49 @@
+{% extends 'homebase.html' %}
+{% block title %}trackEmployee{% endblock %}
+{% block description %} index description {% endblock %}
+{% block keywords %} index keywords {% endblock %}
+
+{% block sidebar %} {% include 'sidebar.html' %}  {% endblock %}
+{% block body %}
+    
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm">
+{% for i in all_requests %}
+    {{ i.user.username }}, {{ i.requestedVacationTime }} günlük izin talep etti!
+    <br>
+
+    {% if i.status == "Onaylandı" %}
+    
+        <p>Onaylandı</p>
+        Onay Verilme Tarihi: {{ i.update_at }}
+
+    {% elif i.status == "Reddedildi" %}
+        <p>Reddedildi</p>
+        Red Verilme Tarihi: {{ i.update_at }}
+
+    {% else %}
+        <p> Başvuru tarihi: {{ i.update_at }}</p>
+
+        <form action="/requestApproved/" method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="approvedId" value={{ i.id }}>
+            <input type="hidden" name="approvedUserId" value={{ i.user.id }}>
+
+            <button class="btn btn-success mt-2">Onayla</button>
+        </form>
+        <form action="/requestDeclined/" method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="declined" value={{ i.id }}>
+            <button class="btn btn-danger mt-2">Reddet</button>
+        </form>
+    {% endif %}
+    <hr>
+    {% endfor %}
+</div>
+
+</div>
+</div>
+
+{%  endblock %}

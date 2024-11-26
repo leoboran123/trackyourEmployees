@@ -33,7 +33,7 @@
         </div>
         <div class="row align-items-center py-3 px-xl-5">
             <div class="col-lg-3 d-none d-lg-block">
-                <a href="" class="text-decoration-none">
+                <a href="/" class="text-decoration-none">
                     <h1 class="m-0 display-5 font-weight-semi-bold"><span class="text-primary font-weight-bold border px-3 mr-1">E</span>Shopper</h1>
                 </a>
                 
@@ -41,16 +41,28 @@
             </div>
             <div class="col-lg-3 d-none d-lg-block" style="float: right;">
                 {% if user.is_authenticated %}
+                    <h6>Hoşgeldin, {{ user }}</h6>
+                    {% if user.is_staff %}
+                        <a href="/checkStaff" class="nav-item nav-link">Çalışanları Kontrol Et</a>
+                        <a href="/mymessages" class="nav-item nav-link">Mesajlar</a>
+
+                    {% else %}
+
+                        <a href="/vacation" class="nav-item nav-link">İzinlerim</a>
+                    {% endif %}
                     <a href="/logout" class="nav-item nav-link">Çıkış Yap</a>
-                
                 {% else %}
                 <a href="/login" class="text-decoration-none"  class="nav-item nav-link">Login</a>
                 <a href="/register" class="text-decoration-none"  class="nav-item nav-link">Register</a>
                 
+
+                
+                </div>
+                <div class="col-lg-3 d-none d-lg-block" style="float: right;">
+                <a href="/adminLogin" class="text-decoration-none"  class="nav-item nav-link">Admin Login</a>
+                <a href="/adminRegister" class="text-decoration-none"  class="nav-item nav-link">Admin Register</a>
                 {% endif %}
             </div>
-
-            
            
         </div>
     </div>

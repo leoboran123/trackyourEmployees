@@ -1,0 +1,54 @@
+{% extends 'homebase.html' %}
+{% block title %}trackEmployee{% endblock %}
+{% block description %} index description {% endblock %}
+{% block keywords %} index keywords {% endblock %}
+
+{% block sidebar %} {% include 'sidebar.html' %}  {% endblock %}
+{% block body %}
+    {% for i in lateData %}
+
+        <li>{{ i.todays_date}} tarihinde {{ i.late_diff }} süre geç kaldınız!</li>
+
+    {% endfor %}
+    <hr>
+        <h1>Toplam {{ vacationDays }} saat yıllık izniniz var!</h1>
+
+    <hr>
+
+    {% if show_request_bar == False %}
+        <p>İzin talebiniz alınmıştır.</p>
+    {% else %}
+    
+        <div class="request-button">
+            <form action="/requestVacation/" id="requestVacationForm" method="POST">
+                {% csrf_token %}
+                İstenen Tatil (Gün): <input type="number" name="vacationDuration">
+                <button type="submit">Yıllık izin talep et!</button>
+            </form>
+        </div>
+    {% endif %}
+
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+
+    <hr>
+    <h3>Eski İzin Talepleriniz</h3>
+
+    {% for k in recentRequests %}
+        {% if k.status == "Bekliyor" %}
+        
+            <li>{{ k.requestedVacationTime }} günlük izin talebiniz, {{ k.update_at }} tarihinde {{ k.status }}</li>
+        {% else %}
+            <li>{{ k.requestedVacationTime }} günlük izin talebiniz, {{ k.update_at }} tarihinde {{ k.staff }} tarafından {{ k.status }}</li>
+
+        {% endif %}
+        
+    {% endfor %}
+    
+{%  endblock %}

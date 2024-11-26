@@ -1,0 +1,83 @@
+{% extends 'homebase.html' %}
+{% block title %} trackEmployee{% endblock %}
+{% block description %} index description {% endblock %}
+{% block keywords %} index keywords {% endblock %}
+
+{% block sidebar %} {% include 'sidebar.html' %}  {% endblock %}
+{% block body %}
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm">
+            <h3>Geç Kalmalar</h3>
+            {% for i in staffData %}
+                <ul>
+                    
+                    <li>
+            
+                        {{i.user.username}}
+                    </li>
+                    <li>
+            
+                        {{i.todays_date}}
+                    </li>
+                    <li>
+            
+                        {{i.late_diff}}
+                    </li>
+                    <hr>
+                    
+                </ul>
+            {% endfor %}
+            
+        </div>
+        <div class="col-sm">
+            <h3>Kalan İzin Günleri</h3>
+            {% for j in staffVacationData %}
+                <ul>
+                    
+                    <li>
+            
+                        {{j.user.username}}
+                    </li>
+                    <li>
+                        {{j.vacationTime}}
+                    </li>
+                    
+                    <hr>
+                    
+                </ul>
+            {% endfor %}
+
+        </div> 
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-sm">
+
+            <h3>Çalışan Giriş-Çıkış Takibi</h3>
+            {% for l in staffTrackData %}
+                <ul>
+                    <li>Çalışan: {{ l.username }}</li>
+                    <li>Tarih: {{ l.todays_date }}</li>
+                    <li>Giriş Saati: {{ l.login_time }}</li>
+                    {% if l.logout_time == None %}
+                        <li>Çıkış Saati: Çıkış yapılmadı</li>
+                    {% else %}
+
+                        <li>Çıkış Saati: {{ l.logout_time }}</li>
+                    {% endif %}
+
+
+                </ul>
+            {% endfor %}
+        </div>
+    </div>
+    
+</div>
+
+<p>{{ time_inf }}</p>
+
+
+{%  endblock %}
